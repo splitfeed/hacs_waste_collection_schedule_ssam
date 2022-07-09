@@ -1,6 +1,7 @@
 # coding: utf-8
 from datetime import datetime
 import json
+import logging
 from urllib.parse import urlencode
 
 import requests
@@ -13,6 +14,7 @@ TEST_CASES = {
     "SSAM": {"street_address": "Stinavägen 3, Växjö"},
     "Polisen": {"street_address": "Sandgärdsgatan 31, Växjö"},
 }
+_LOGGER = logging.getLogger(__name__)
 
 
 class Source:
@@ -51,10 +53,17 @@ class Source:
             if waste_type == "Matavfall":
                 icon = "mdi:leaf"
             next_pickup = item["NextWastePickup"]
+
             try:
                 next_pickup_date = datetime.fromisoformat(next_pickup).date()
             except ValueError as e:
-                next_pickup_date = datetime.strptime(next_pickup, "%b %Y").date()
+                # In some cases the date is just a month, so parse this as the
+                # first of the month to atleast get something close
+                try:
+                    next_pickup_date = datetime.strptime(next_pickup, "%b %Y").date()
+                except ValueError as e:
+                    _LOGGER.warn(f"Failed to parse date {next_pickup} {str(e)}")
+                    continue
 
             entries.append(Collection(date=next_pickup_date, t=waste_type, icon=icon))
 
