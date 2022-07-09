@@ -6,13 +6,12 @@ from urllib.parse import urlencode
 import requests
 from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 
-TITLE = "Lerum Vatten och Avlopp"
-DESCRIPTION = "Source for Lerum Vatten och Avlopp waste collection."
+TITLE = "SSAM"
+DESCRIPTION = "Source for SSAM waste collection."
 URL = "https://edpfuture.ssam.se/FutureWeb/SimpleWastePickup/SimpleWastePickup"
 TEST_CASES = {
-    # "SSAM": {"street_address": "Stinavägen 3, Växjö"},
-    # "Polisen": {"street_address": "Sandgärdsgatan 31, Växjö"},
-    "Ekliden": {"street_address": "Kalvsvik Ekliden, Kalvsvik"},
+    "SSAM": {"street_address": "Stinavägen 3, Växjö"},
+    "Polisen": {"street_address": "Sandgärdsgatan 31, Växjö"},
 }
 
 
